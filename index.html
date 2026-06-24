@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cours d'architecture logicielle — pédagogie inversée et méthode Feynman : quiz d'abord, cours ensuite.">
+  <title>Tuteur d'Architecture Logicielle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Syne:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="scene-bg" class="scene-bg" hidden aria-hidden="true">
+    <canvas id="notebook-canvas"></canvas>
+  </div>
+
+  <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-content">
+        <p class="header-eyebrow">Parcours · 10 modules</p>
+        <h1>Tuteur d'Architecture Logicielle</h1>
+        <p class="tagline">Quiz d'abord, cours ensuite — pédagogie inversée · méthode Feynman</p>
+      </div>
+      <button type="button" id="reset-progress-btn" class="btn btn-reset" aria-label="Réinitialiser toute la progression du parcours">
+        Réinitialiser
+      </button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <nav class="module-nav" aria-label="Carte des modules">
+      <h2 id="map-heading" class="nav-heading">Carte des modules</h2>
+      <ol id="module-map" class="module-map" aria-labelledby="map-heading"></ol>
+    </nav>
+
+    <main id="main-content" class="main-content">
+      <section id="rules-section" class="rules-section" aria-labelledby="rules-heading">
+        <h2 id="rules-heading">La règle du jeu</h2>
+        <p>
+          Pour chaque module, réponds d'abord au <strong>quiz</strong> sans regarder le cours.
+          Chaque concept est expliqué avec une <strong>image du quotidien</strong> (méthode Feynman).
+          Le cours se débloque après soumission : correction, puis points de connaissance.
+          <strong>Ta progression est sauvegardée automatiquement</strong> dans ton navigateur.
+        </p>
+      </section>
+
+      <div id="modules-track" class="modules-track" aria-live="polite"></div>
+
+      <p id="course-complete-msg" class="course-complete-msg course-complete-banner" hidden>
+        Parcours terminé — les 10 modules sont complétés.
+      </p>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>Du code applicatif aux systèmes distribués</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="modules-data.js"></script>
+  <script src="script.js"></script>
+  <script src="notebook.js"></script>
+</body>
+</html>

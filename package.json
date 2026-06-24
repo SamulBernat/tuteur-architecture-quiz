@@ -1,0 +1,12 @@
+{
+  "name": "tuteur-architecture-quiz",
+  "private": true,
+  "description": "Tuteur d'architecture logicielle — site statique",
+  "scripts": {
+    "deploy": "wrangler pages deploy . --project-name=tuteur-architecture-quiz",
+    "deploy:preview": "wrangler pages deploy . --project-name=tuteur-architecture-quiz --branch=preview"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.0"
+  }
+}
