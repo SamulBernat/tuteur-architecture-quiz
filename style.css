@@ -862,24 +862,24 @@ body {
 }
 
 .knowledge-list em {
-  color: var(--color-text-muted);
+  color: var(--text-muted);
   font-style: normal;
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-.knowledge-image {
+.knowledge-definition {
   margin: 0.5rem 0 0.75rem;
-  color: var(--color-text-muted);
+  color: var(--text);
   font-size: 0.95rem;
   line-height: 1.55;
 }
 
-.knowledge-insight {
+.knowledge-example {
   margin: 0 0 0.75rem;
-  color: var(--color-text);
-  font-size: 0.98rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
   line-height: 1.5;
 }
 

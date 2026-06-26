@@ -638,13 +638,12 @@ function renderKnowledge(mod, section) {
 
   mod.knowledgePoints.forEach((point) => {
     const li = document.createElement("li");
-    const insightHtml = point.insight
-      ? `<p class="knowledge-insight"><strong>${escapeHtml(point.insight)}</strong></p>`
-      : "";
+    const definition = point.definition || point.image || "";
+    const example = point.example || point.insight || "";
     li.innerHTML = `
       <strong>${escapeHtml(point.concept)}</strong>
-      <p class="knowledge-image"><em>Image :</em> ${escapeHtml(point.image)}</p>
-      ${insightHtml}
+      <p class="knowledge-definition"><em>Définition :</em> ${escapeHtml(definition)}</p>
+      <p class="knowledge-example"><em>Exemple :</em> ${escapeHtml(example)}</p>
       <p class="trade-off"><strong>Trade-off :</strong> ${escapeHtml(point.tradeOff)}</p>
     `;
     knowledgeList.appendChild(li);

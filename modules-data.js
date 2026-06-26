@@ -45,27 +45,27 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "Architecture logicielle",
-        image: "Le plan d'une maison. La déco, les meubles (le code de tous les jours) se changent en un après-midi. Les murs porteurs, l'emplacement de l'escalier, l'arrivée d'eau (l'architecture) se changent au prix de gros travaux.",
-        insight: "L'architecture, ce sont les décisions difficiles à défaire.",
-        tradeOff: "Prendre le temps de bien poser les murs ralentit le démarrage, mais évite de tout casser plus tard."
+        definition: "Ensemble des décisions structurantes sur la forme du système : quels composants existent, comment ils communiquent, et quelles contraintes de qualité on vise.",
+        example: "Séparer le panier e-commerce du catalogue produits en deux modules avec une API entre les deux, plutôt que tout mélanger dans un seul gros fichier.",
+        tradeOff: "Structurer tôt prend du temps au démarrage, mais évite de refactorer toute l'application quand le trafic ou l'équipe grossit."
       },
       {
-        concept: "Attributs de qualité (quality attributes / -ilities)",
-        image: "Acheter une voiture. Tu veux qu'elle soit rapide, économe, sûre, confortable, pas chère. Impossible d'avoir le maximum de tout : une Ferrari n'est pas économe, une citadine n'est pas rapide. Pareil pour un logiciel : rapidité, scalabilité, maintenabilité, sécurité, disponibilité.",
-        insight: "Concevoir une archi, c'est arbitrer entre ces qualités.",
-        tradeOff: "Choisir une voiture, c'est renoncer ; concevoir une archi, c'est arbitrer."
+        concept: "Attributs de qualité (quality attributes)",
+        definition: "Propriétés mesurables du système : performance, disponibilité, sécurité, maintenabilité, scalabilité, etc.",
+        example: "« Le checkout doit répondre en moins de 200 ms pour 99 % des requêtes » ou « 99,9 % de disponibilité mensuelle ».",
+        tradeOff: "Renforcer la sécurité (chiffrement, audits) ajoute souvent de la latence et du coût d'exploitation."
       },
       {
         concept: "Trade-off (compromis)",
-        image: "Une couverture trop courte. Tu te couvres les épaules, tu as froid aux pieds ; tu couvres les pieds, tu as froid aux épaules.",
-        insight: "Chaque choix donne quelque chose et en retire un autre. Le bon architecte ne cherche pas la solution parfaite, il cherche le compromis adapté au contexte.",
-        tradeOff: "Ignorer les compromis mène à des choix « magiques » qui coûtent cher plus tard."
+        definition: "Fait qu'améliorer un objectif en degrade un autre : on ne peut pas tout maximiser en même temps.",
+        example: "Répliquer les données sur 3 zones géographiques améliore la disponibilité, mais complique la cohérence et augmente la facture cloud.",
+        tradeOff: "Ignorer les compromis mène à des promesses impossibles (« rapide, gratuit, ultra-sécurisé, sans dette »)."
       },
       {
         concept: "Exigences non-fonctionnelles",
-        image: "Au restaurant, « je veux un steak » est l'exigence fonctionnelle ; « je veux être servi en 15 min, sans tomber malade » sont les non-fonctionnelles.",
-        insight: "Le logiciel doit faire le job et le faire vite, sûr, fiable.",
-        tradeOff: "Les exigences non-fonctionnelles orientent l'architecture — les négliger, c'est construire une maison sans fondations."
+        definition: "Contraintes sur la façon dont le système doit se comporter, en dehors des fonctionnalités métier.",
+        example: "« L'appli doit supporter 10 000 utilisateurs simultanés » ou « les données personnelles doivent être chiffrées au repos ».",
+        tradeOff: "Sans exigences non-fonctionnelles écrites, l'équipe optimise le « ça marche » au détriment de la tenue en charge."
       }
     ],
     takeaway: "L'architecture, ce sont les décisions structurantes et difficiles à défaire ; elle se juge non pas sur « est-ce que ça marche » mais sur « est-ce que ça tiendra et évoluera »."
@@ -113,39 +113,39 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "Couplage (coupling)",
-        image: "Des wagons de train attachés. Si tu freines le premier, tous freinent. Couplage fort = quand tu touches une brique, les autres bougent.",
-        insight: "On cherche un couplage faible : des wagons qu'on peut détacher sans dérailler le reste.",
-        tradeOff: "Trop découpler ajoute des intermédiaires et de la complexité ; il faut viser « juste assez détaché »."
+        definition: "Degré de dépendance entre deux modules : plus le couplage est fort, plus modifier l'un force à modifier l'autre.",
+        example: "Si `OrderController` appelle directement des requêtes SQL PostgreSQL, changer de base oblige à toucher le controller.",
+        tradeOff: "Découpler via des interfaces ajoute du code, mais limite l'impact des changements."
       },
       {
         concept: "Cohésion (cohesion)",
-        image: "Une boîte à outils bien rangée — les tournevis ensemble, les clés ensemble. L'inverse : un tiroir fourre-tout où tu ne retrouves rien.",
-        insight: "Une brique cohésive regroupe ce qui va naturellement ensemble.",
-        tradeOff: "On vise forte cohésion + faible couplage : chaque brique fait une chose claire, et dépend peu des autres."
+        definition: "Degré auquel les éléments d'un module travaillent vers un même objectif.",
+        example: "Un module `Billing` qui ne gère que facturation et paiements = haute cohésion. Le même module qui envoie aussi des emails marketing = faible cohésion.",
+        tradeOff: "Trop découper en micro-modules crée de la fragmentation ; l'objectif est un module focalisé, pas minuscule."
       },
       {
-        concept: "Separation of concerns (séparation des préoccupations)",
-        image: "Dans un restaurant, la cuisine cuisine, la salle sert, la caisse encaisse. Personne ne fait tout.",
-        insight: "Chaque partie du code s'occupe d'un seul type de problème.",
-        tradeOff: "Plus de séparation = plus de fichiers à naviguer, mais chacun est simple."
+        concept: "Separation of concerns (SoC)",
+        definition: "Principe qui isole chaque type de responsabilité (UI, logique métier, accès données…) dans une partie distincte.",
+        example: "Le template HTML affiche les données ; un service `OrderService` contient la règle métier ; un repository accède à la BDD.",
+        tradeOff: "Plus de fichiers et de couches, mais chaque fichier a un rôle identifiable."
       },
       {
         concept: "SOLID",
-        image: "Des LEGO standardisés — chaque brique a un rôle, et elles s'emboîtent sans colle. Cinq principes pour du code orienté objet propre.",
-        insight: "Chaque classe a un seul boulot, on étend sans tout réécrire, on ne crée pas de dépendances surprises.",
-        tradeOff: "SOLID peut sembler over-engineered sur un petit script — adapte à l'échelle."
+        definition: "Cinq principes OO (Single Responsibility, Open/Closed, Liskov, Interface Segregation, Dependency Inversion) pour limiter couplage et rigidity.",
+        example: "Open/Closed : ajouter un mode de paiement PayPal via une interface `PaymentProvider` sans modifier le code existant.",
+        tradeOff: "Sur un script de 50 lignes, appliquer SOLID partout alourdit inutilement le code."
       },
       {
         concept: "DRY (Don't Repeat Yourself)",
-        image: "Une seule recette de gâteau dans un carnet. Si la recette change, tu modifies une page, pas vingt feuilles volantes.",
-        insight: "Une règle = un seul endroit.",
-        tradeOff: "À l'excès, on factorise des choses qui n'avaient rien à voir → couplage artificiel. DRY oui, mais pas au point de relier ce qui est juste « ressemblant »."
+        definition: "Une règle métier ne doit exister qu'à un seul endroit dans le code.",
+        example: "Le calcul de TVA vit dans `TaxCalculator.calculate()` — pas recopié dans 5 controllers.",
+        tradeOff: "Factoriser deux morceaux « qui se ressemblent » mais qui évoluent différemment crée un couplage artificiel."
       },
       {
         concept: "KISS (Keep It Simple)",
-        image: "Pour planter un clou, un marteau, pas une perceuse à colonne.",
-        insight: "La solution la plus simple qui marche est presque toujours la bonne.",
-        tradeOff: "Trop simple aujourd'hui peut devenir un goulot demain — le timing compte."
+        definition: "Préférer la solution la plus simple qui répond au besoin actuel.",
+        example: "Stocker la config dans un fichier JSON avant d'installer Redis pour 3 clés de configuration.",
+        tradeOff: "Une solution trop minimaliste peut devenir un goulot quand les besoins augmentent."
       }
     ],
     takeaway: "Vise forte cohésion, faible couplage. Une brique = un rôle clair, le moins de fils possible vers les voisines."
@@ -193,27 +193,27 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "Architecture en couches (layered)",
-        image: "Un immeuble. On entre par le rez-de-chaussée (l'interface), on monte aux étages (logique métier, puis accès aux données). Chaque étage ne parle qu'à l'étage voisin, pas en sautant par la fenêtre.",
-        insight: "Chaque couche communique avec la couche adjacente, pas en raccourci.",
-        tradeOff: "Clair et carré, mais parfois lourd (traverser tous les étages pour une demande simple)."
+        definition: "Organisation du code en niveaux (présentation, métier, données…) où chaque couche ne parle qu'à la couche voisine.",
+        example: "Controller → Service → Repository → PostgreSQL. Le controller ne fait jamais de `SELECT` direct.",
+        tradeOff: "Une requête simple peut traverser 3 couches ; utile pour la clarté, parfois lourd pour un CRUD basique."
       },
       {
         concept: "MVC (Modèle-Vue-Contrôleur)",
-        image: "Un restaurant. La Vue = la salle et le menu (ce que voit le client). Le Modèle = la cuisine et le garde-manger (données et règles). Le Contrôleur = le serveur qui prend la commande et fait la navette.",
-        insight: "Chacun son rôle ; le client ne voit jamais la cuisine.",
-        tradeOff: "Excellent pour séparer l'affichage du reste ; peut devenir confus quand l'appli grossit beaucoup."
+        definition: "Pattern qui sépare les données et règles (Model), l'affichage (View) et la coordination des requêtes (Controller).",
+        example: "Route `/orders/42` → `OrderController.show()` lit le Model → la View affiche le template HTML.",
+        tradeOff: "Les controllers grossissent vite si toute la logique métier y est déplacée (« fat controllers »)."
       },
       {
         concept: "Architecture hexagonale (ports & adapters)",
-        image: "Les prises électriques. Ton appareil (le cœur métier) a une fiche standard. Que tu sois en France, au UK ou aux US, tu mets un adaptateur ; l'appareil, lui, ne change pas.",
-        insight: "Le métier définit des « prises » (ports), et on y branche les outils externes via des adaptateurs interchangeables.",
-        tradeOff: "On peut changer un outil sans toucher au métier (et tester le métier seul), mais ça demande plus de structure au départ."
+        definition: "Le domaine métier au centre expose des interfaces (ports) ; les détails techniques (BDD, API, UI) sont des adapters interchangeables.",
+        example: "Interface `OrderRepository` implémentée par `PostgresOrderRepository` en prod et `InMemoryOrderRepository` en test.",
+        tradeOff: "Plus de fichiers et d'interfaces, mais le métier se teste sans base ni framework web."
       },
       {
         concept: "Clean architecture",
-        image: "Des poupées russes. Au centre, les règles métier les plus stables ; autour, des couches de plus en plus « techniques » et jetables.",
-        insight: "Règle d'or : les dépendances pointent vers l'intérieur — le détail technique dépend du métier, jamais l'inverse.",
-        tradeOff: "Même idée que l'hexagonal, poussée plus loin — overkill pour un CRUD trivial."
+        definition: "Variante concentrique : entités et use cases au centre, infrastructure à la périphérie. Toutes les dépendances pointent vers l'intérieur.",
+        example: "Le use case `PlaceOrder` ne importe ni Express ni Mongoose — seulement des interfaces du domaine.",
+        tradeOff: "Structure stricte, souvent excessive pour une petite appli CRUD."
       }
     ],
     takeaway: "Protège ton cœur métier des outils techniques. Les outils sont jetables, les règles métier sont précieuses."
@@ -261,27 +261,27 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "Monolithe (monolith)",
-        image: "Une grande maison familiale. Tout le monde sous le même toit, on se parle d'une pièce à l'autre en criant — c'est simple et rapide. Mais si tu refais l'électricité, tu coupes le courant de toute la maison.",
-        insight: "Tout le code dans un seul bloc déployé ensemble.",
-        tradeOff: "Simple à démarrer, à tester, à déboguer ; devient lourd quand l'équipe et le code grossissent."
+        definition: "Application livrée et déployée comme une seule unité (un binaire, un container, un artefact).",
+        example: "Une appli Rails complète : routes, jobs, admin et API dans le même repo, un seul `docker compose up`.",
+        tradeOff: "Simple à développer et déboguer ; tout le monde déploie et scale le même bloc."
       },
       {
         concept: "Microservices",
-        image: "Un quartier de petites maisons indépendantes. Chacune a sa cuisine, son compteur. Tu refais l'une sans déranger les autres. Mais pour se parler, les voisins doivent sortir et marcher dans la rue (le réseau).",
-        insight: "Chaque fonctionnalité est un petit service autonome, déployable seul.",
-        tradeOff: "Équipes indépendantes et montée en charge ciblée, au prix d'une grosse complexité réseau, de surveillance et de coordination."
+        definition: "Application découpée en services autonomes, chacun avec son code, sa base (souvent) et son déploiement indépendant.",
+        example: "Service `orders`, service `inventory`, service `notifications` — chacun a son repo et son pipeline CI.",
+        tradeOff: "Autonomie d'équipe et scaling ciblé, mais latence réseau, transactions distribuées et observabilité à gérer."
       },
       {
         concept: "Monolithe modulaire (modular monolith)",
-        image: "Une colocation. Un seul appartement (un seul déploiement), mais des chambres bien séparées avec des règles claires de qui touche quoi.",
-        insight: "Le meilleur des deux mondes pour beaucoup d'équipes : simplicité d'un bloc unique, intérieur proprement cloisonné.",
-        tradeOff: "Demande discipline — sans elle, retour au big ball of mud."
+        definition: "Un seul déploiement, mais avec des modules/domaines clairement séparés à l'intérieur du code.",
+        example: "Packages `billing/`, `catalog/`, `shipping/` dans le même repo, avec des imports interdits entre certains modules.",
+        tradeOff: "Bon compromis de départ : simplicité du monolithe + frontières prêtes pour une extraction future."
       },
       {
         concept: "Quand choisir quoi ?",
-        image: "On ne construit pas un quartier entier pour loger une famille de quatre.",
-        insight: "On démarre presque toujours par un monolithe (idéalement modulaire) et on ne découpe en microservices que quand une vraie douleur l'exige.",
-        tradeOff: "Découper trop tôt est une erreur classique et coûteuse."
+        definition: "Le découpage dépend de la maturité du domaine, de la taille de l'équipe et des besoins réels de scaling/release.",
+        example: "MVP à 3 devs → monolithe modulaire. Équipes de 50 personnes sur 8 domaines avec releases indépendantes → microservices peuvent se justifier.",
+        tradeOff: "Microservices trop tôt = complexité distribuée sans bénéfice ; monolithe trop longtemps = couplage d'équipe."
       }
     ],
     takeaway: "Microservices ≠ « plus moderne donc mieux ». C'est un compromis qui résout des problèmes d'échelle… en en créant d'autres. Commence simple."
@@ -329,27 +329,27 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "Synchrone vs asynchrone",
-        image: "Le synchrone est un coup de téléphone — tu restes en ligne jusqu'à la réponse, pratique mais bloquant. L'asynchrone est un SMS ou une boîte aux lettres — tu déposes ton message et tu vaques à tes occupations.",
-        insight: "Synchrone = j'attends ; asynchrone = je délègue et je continue.",
-        tradeOff: "Synchrone est simple et immédiat mais fragile ; asynchrone est robuste et fluide mais plus complexe à suivre."
+        definition: "Sync : l'appelant attend la réponse avant de continuer. Async : l'appelant envoie un message et reprend sans attendre le résultat immédiat.",
+        example: "Sync : appeler l'API banque et bloquer le checkout jusqu'à la réponse. Async : publier `OrderPlaced` dans une queue, un worker envoie l'email plus tard.",
+        tradeOff: "Sync = plus simple à lire ; async = plus résilient aux pics, mais cohérence eventuelle à gérer."
       },
       {
         concept: "API (interface de programmation)",
-        image: "Le menu d'un restaurant. Tu ne vas pas en cuisine ; tu commandes via une liste de plats prédéfinis.",
-        insight: "Une API, c'est la liste officielle des demandes qu'un service accepte, sans que tu saches comment c'est fait à l'intérieur.",
-        tradeOff: "Le menu cadre et protège, mais il faut que les deux côtés respectent le contrat."
+        definition: "Contrat formalisé qui liste les opérations qu'un service expose, sans révéler son implémentation interne.",
+        example: "`POST /api/orders` avec body JSON `{ productId: 42, qty: 1 }` retourne `{ orderId: 'abc' }`.",
+        tradeOff: "Le contrat doit être versionné et respecté des deux côtés — une breaking change casse les clients."
       },
       {
         concept: "REST / gRPC",
-        image: "Deux façons de « passer commande » entre services. REST = le menu web classique, lisible, universel. gRPC = un canal interne plus rapide et plus strict, comme un passe-plat direct entre cuisines voisines.",
-        insight: "REST pour exposer des données ; gRPC pour les échanges internes intensifs.",
-        tradeOff: "REST gagne en simplicité et compatibilité ; gRPC gagne en vitesse machine-to-machine."
+        definition: "REST : style HTTP ressource-centré (GET/POST/PUT/DELETE + JSON). gRPC : RPC typé sur HTTP/2 avec Protocol Buffers, orienté performance inter-services.",
+        example: "REST : `GET /users/12` pour une API publique. gRPC : `InventoryService.GetStock(productId)` entre microservices internes.",
+        tradeOff: "REST = universel et debuggable avec curl ; gRPC = plus rapide et typé, moins pratique depuis un navigateur."
       },
       {
         concept: "File de messages (message queue)",
-        image: "La file d'attente à la poste, ou la boîte de réception. Les demandes s'empilent, un guichet les traite une par une à son rythme.",
-        insight: "Si un pic arrive, la file absorbe le choc au lieu de tout faire planter.",
-        tradeOff: "Lisse les pics et découple émetteur/récepteur, mais ajoute un intermédiaire et la réponse n'est plus instantanée."
+        definition: "Buffer persistant entre un producteur et un ou plusieurs consommateurs qui traitent les messages à leur rythme.",
+        example: "Black Friday : 50 000 événements `OrderCreated` dans RabbitMQ, 20 workers consomment progressivement.",
+        tradeOff: "Absorbe les pics et découple les services, mais ajoute latence et gestion des dead-letter queues."
       }
     ],
     takeaway: "Demande-toi toujours « est-ce que l'utilisateur doit vraiment attendre cette réponse ? ». Si non, l'asynchrone rend le système plus fluide et plus robuste."
@@ -397,33 +397,33 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "Base relationnelle (SQL)",
-        image: "Un classeur Excel rigoureux. Des tableaux à colonnes fixes (un client a un nom, un email, un id), reliés entre eux (une commande pointe vers un client).",
-        insight: "Tout est carré, structuré, vérifié.",
-        tradeOff: "Parfait pour des données bien définies et des relations claires ; moins souple quand la forme des données change tout le temps."
+        definition: "Base de données structurée en tables avec colonnes typées, clés et relations (foreign keys), interrogée via SQL.",
+        example: "Table `users(id, email)` liée à `orders(user_id, total)` — une commande référence toujours un utilisateur existant.",
+        tradeOff: "Schéma strict et transactions ACID ; moins adapté si la structure des documents change souvent."
       },
       {
         concept: "Base NoSQL",
-        image: "Des boîtes à chaussures étiquetées. Tu mets ce que tu veux dans chaque boîte, la forme peut varier d'une boîte à l'autre.",
-        insight: "Souple et rapide pour de gros volumes peu structurés.",
-        tradeOff: "Gagne en flexibilité et en passage à l'échelle ; perd les garanties strictes du SQL. Données structurées → SQL ; gros volumes flexibles → NoSQL."
+        definition: "Famille de bases non relationnelles (document, clé-valeur, colonne, graphe) avec schéma flexible et scaling horizontal simplifié.",
+        example: "MongoDB stocke un document `{ _id, name, tags: [...] }` sans imposer les mêmes champs à tous les documents.",
+        tradeOff: "Flexibilité et volume, mais pas les mêmes garanties de cohérence qu'un SQL bien modélisé."
       },
       {
         concept: "Cache",
-        image: "Tu poses la bouteille de lait sur le comptoir pendant le petit-déj au lieu d'aller au frigo à chaque gorgée.",
-        insight: "Le cache garde une copie du fréquent tout près, pour répondre vite.",
-        tradeOff: "Énorme gain de vitesse, mais risque de servir une info périmée. La grande question : quand jeter la copie ?"
+        definition: "Couche de stockage rapide qui conserve une copie de données lues fréquemment, pour éviter de reinterroger la source lente.",
+        example: "Redis garde le profil utilisateur 5 minutes après un `GET /users/12` — les requêtes suivantes ne touchent pas PostgreSQL.",
+        tradeOff: "Latence réduite, mais la copie peut être périmée tant qu'elle n'est pas invalidée ou expirée (TTL)."
       },
       {
         concept: "Cohérence (consistency)",
-        image: "Si tu vires de l'argent, tu veux que ton solde affiche immédiatement le bon montant, partout.",
-        insight: "Cohérence = tout le monde voit la même donnée à jour, au même instant.",
-        tradeOff: "Coûteux à garantir quand les données sont copiées sur plusieurs machines."
+        definition: "Propriété selon laquelle toutes les lectures retournent la dernière écriture (ou une valeur conforme au modèle de cohérence choisi).",
+        example: "Après un virement, le solde affiché est identique sur l'app mobile et sur le web — pas de montant intermédiaire visible.",
+        tradeOff: "Cohérence forte entre réplicas = plus de latence et de coordination réseau."
       },
       {
         concept: "Théorème CAP",
-        image: "La couverture trop courte, version réseau. Quand la communication entre tes machines se coupe, tu dois choisir : rester cohérent (refuser de répondre) ou rester disponible (répondre quitte à donner une info un peu ancienne).",
-        insight: "Tu ne peux pas avoir les deux pendant une coupure.",
-        tradeOff: "Une banque choisira la cohérence ; un fil d'actualité choisira la disponibilité."
+        definition: "Sur un système distribué, en cas de partition réseau (P), on ne peut garantir simultanément Cohérence (C) et Disponibilité (A) — il faut en sacrifier une.",
+        example: "Pendant une coupure entre datacenters : soit on refuse d'écrire (C), soit on accepte des lectures potentiellement obsolètes (A).",
+        tradeOff: "Banque → priorité C ; fil d'actualité → priorité A."
       }
     ],
     takeaway: "Une donnée copiée (cache, réplique) est rapide mais peut mentir. Tout l'art consiste à décider quand la fraîcheur compte vraiment."
@@ -471,33 +471,33 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "Scaling vertical",
-        image: "À la caisse du supermarché bondé, tu rends la caissière plus rapide et tu agrandis le tapis.",
-        insight: "Tu muscles la machine unique : plus de mémoire, plus de puissance.",
-        tradeOff: "Simple (rien à réorganiser) mais plafond physique, coût élevé, et si la machine tombe, tout tombe."
+        definition: "Augmenter les ressources d'une seule machine (CPU, RAM, disque) pour absorber plus de charge.",
+        example: "Passer de 4 Go à 32 Go RAM sur le serveur PostgreSQL quand les requêtes ralentissent.",
+        tradeOff: "Simple à mettre en œuvre, mais plafond matériel et point de défaillance unique."
       },
       {
         concept: "Scaling horizontal",
-        image: "Tu ouvres plus de caisses. Au lieu d'une caisse surpuissante, dix caisses normales.",
-        insight: "Tu ajoutes des machines en parallèle.",
-        tradeOff: "Quasiment pas de plafond et plus résistant aux pannes, mais il faut répartir les clients et coordonner."
+        definition: "Ajouter des instances en parallèle pour répartir la charge au lieu d'agrandir une seule machine.",
+        example: "3 replicas de l'API derrière un load balancer au lieu d'un seul serveur surdimensionné.",
+        tradeOff: "Scaling quasi illimité et meilleure tolérance aux pannes, mais coordination et répartition à gérer."
       },
       {
         concept: "Load balancer (répartiteur de charge)",
-        image: "L'employé à l'entrée qui dit « caisse 3 est libre, allez-y ».",
-        insight: "Il distribue les visiteurs vers les machines disponibles pour qu'aucune ne sature.",
-        tradeOff: "Indispensable pour le scaling horizontal ; devient lui-même un point à surveiller et à doubler."
+        definition: "Composant réseau qui distribue les requêtes entrantes entre plusieurs backends selon une règle (round-robin, least connections…).",
+        example: "NGINX envoie chaque `GET /` vers `app-1`, `app-2` ou `app-3` selon la charge actuelle.",
+        tradeOff: "Indispensable en horizontal ; le load balancer lui-même doit être redondé."
       },
       {
         concept: "Stateless (sans état)",
-        image: "Un guichet d'information où, à chaque question, tu redonnes tout le contexte ; l'employé n'a pas besoin de se souvenir de toi.",
-        insight: "Comme aucune machine ne retient l'utilisateur, n'importe laquelle peut traiter n'importe quelle demande.",
-        tradeOff: "Il faut stocker la « mémoire » ailleurs (base, cache partagé), mais on gagne une scalabilité énorme."
+        definition: "Service qui ne conserve pas de session locale entre deux requêtes — chaque requête contient tout le contexte nécessaire.",
+        example: "JWT dans le header `Authorization` : n'importe quelle instance API peut traiter la requête sans mémoire partagée.",
+        tradeOff: "Permet d'ajouter/retirer des instances librement ; l'état utilisateur doit vivre ailleurs (BDD, Redis)."
       },
       {
         concept: "CDN (réseau de distribution de contenu)",
-        image: "Au lieu d'un seul entrepôt central à l'autre bout du monde, des mini-entrepôts dans chaque ville.",
-        insight: "On rapproche les contenus (images, vidéos) des utilisateurs.",
-        tradeOff: "Énorme gain de vitesse, mais c'est une copie de plus à tenir à jour."
+        definition: "Réseau de serveurs edge qui met en cache les assets statiques (JS, CSS, images, vidéos) près des utilisateurs.",
+        example: "Cloudflare sert `logo.png` depuis Paris pour un visiteur français, au lieu du serveur d'origine aux USA.",
+        tradeOff: "Latence réduite pour le contenu statique ; invalidation de cache à prévoir lors des mises à jour."
       }
     ],
     takeaway: "Pour grossir durablement, on cherche à pouvoir « ajouter des caisses » (horizontal). Et pour ça, le secret c'est le stateless : des machines interchangeables qui ne retiennent rien."
@@ -545,33 +545,33 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "Redondance (redundancy)",
-        image: "La roue de secours dans le coffre. Tu espères ne jamais t'en servir, mais le jour où un pneu crève, tu continues ta route.",
-        insight: "On double les éléments critiques pour qu'une panne n'arrête pas tout.",
-        tradeOff: "Ça coûte (payer un double qui dort), mais c'est le prix de la disponibilité."
+        definition: "Duplication de composants critiques (serveurs, bases, zones) pour qu'une panne d'un élément n'arrête pas le service.",
+        example: "Deux replicas PostgreSQL en primary/replica : si le primary tombe, le replica prend le relais.",
+        tradeOff: "Coût matériel et opérationnel doublé, mais disponibilité nettement améliorée."
       },
       {
         concept: "Failover (bascule automatique)",
-        image: "Le groupe électrogène d'un hôpital qui démarre tout seul à la coupure de courant.",
-        insight: "Quand l'élément principal tombe, le secours prend le relais automatiquement.",
-        tradeOff: "La bascule doit elle-même être fiable et testée — un secours qu'on n'a jamais essayé est un faux secours."
+        definition: "Mécanisme qui redirige automatiquement le trafic ou les écritures vers un composant de secours quand le principal échoue.",
+        example: "Health check échoue sur `api-1` → le load balancer retire `api-1` et route tout vers `api-2`.",
+        tradeOff: "Doit être testé régulièrement (game days) — un failover jamais exercé peut échouer le jour J."
       },
       {
         concept: "Retry (réessai)",
-        image: "La ligne sonne occupé, tu rappelles 30 secondes plus tard.",
-        insight: "On retente une opération qui a échoué, car beaucoup de pannes sont passagères.",
-        tradeOff: "Réessayer trop vite et tous en même temps peut achever un service déjà saturé. On espace les tentatives et on fixe une limite."
+        definition: "Politique qui relance une opération échouée après un délai, en supposant que l'erreur est transitoire (timeout réseau, surcharge temporaire).",
+        example: "3 tentatives avec backoff exponentiel (1s, 2s, 4s) avant d'abandonner un appel API externe.",
+        tradeOff: "Corrige les pannes passagères, mais retries massifs simultanés peuvent saturer un service déjà en difficulté."
       },
       {
         concept: "Circuit breaker (disjoncteur)",
-        image: "Le disjoncteur électrique de la maison. En cas de surcharge, il coupe pour protéger l'installation.",
-        insight: "Quand un service répond mal, on arrête de l'appeler un moment pour le laisser respirer et éviter l'effet domino.",
-        tradeOff: "On rend volontairement une partie indisponible pour sauver l'ensemble."
+        definition: "Pattern qui coupe temporairement les appels vers un service défaillant pour éviter la cascade de timeouts et laisser le service se rétablir.",
+        example: "Après 5 échecs consécutifs sur `PaymentService`, le breaker passe en OPEN pendant 30s — les appels retournent une erreur immédiate.",
+        tradeOff: "Protège le système global au prix d'une fonctionnalité temporairement indisponible."
       },
       {
         concept: "Observabilité (observability)",
-        image: "Le tableau de bord d'une voiture — vitesse, température, jauge d'essence, voyants. Sans lui, tu roules les yeux fermés.",
-        insight: "C'est l'ensemble des mesures, journaux et alertes qui te disent ce qui se passe à l'intérieur du système.",
-        tradeOff: "Ça demande de l'effort à mettre en place, mais sans visibilité, un incident devient une enquête à l'aveugle."
+        definition: "Capacité à comprendre l'état interne d'un système à partir de ses sorties externes : métriques, logs, traces distribuées et alertes.",
+        example: "Grafana affiche le taux d'erreur 5xx ; une alerte Slack part si la latence p95 dépasse 500 ms pendant 5 min.",
+        tradeOff: "Investissement initial (instrumentation, stack), mais indispensable pour diagnostiquer les incidents en production."
       }
     ],
     takeaway: "En architecture, on ne se demande pas si ça va tomber, mais quand. La résilience, c'est prévoir la panne et organiser la survie à l'avance."
@@ -619,33 +619,33 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "Authentification (authn)",
-        image: "Montrer sa carte d'identité à l'entrée.",
-        insight: "« Prouve-moi qui tu es. » Mot de passe, code, empreinte. C'est l'étape « qui es-tu ? ».",
-        tradeOff: "Plus de méthodes d'auth = plus de sécurité, mais aussi plus de friction utilisateur."
+        definition: "Processus qui vérifie l'identité d'un utilisateur ou d'un service (mot de passe, OAuth, certificat, MFA).",
+        example: "Login email/mot de passe → le serveur vérifie le hash bcrypt → émet un JWT signé.",
+        tradeOff: "Plus de facteurs = plus de sécurité, mais plus de friction à la connexion."
       },
       {
         concept: "Autorisation (authz)",
-        image: "Ton badge d'employé ouvre certaines portes, pas toutes.",
-        insight: "« Maintenant que je sais qui tu es, voici ce que tu as le droit de faire. » Être identifié ≠ avoir tous les droits.",
-        tradeOff: "Des droits fins = plus de sécurité mais plus de règles à gérer."
+        definition: "Contrôle qui détermine quelles actions ou ressources un identité authentifiée peut accéder.",
+        example: "Utilisateur authentifié avec rôle `admin` peut `DELETE /users/12` ; un `viewer` ne peut que `GET`.",
+        tradeOff: "RBAC/ABAC fin = sécurité renforcée, mais matrice de permissions plus complexe à maintenir."
       },
       {
         concept: "Gestion des secrets",
-        image: "Tu ne notes pas ton code de carte bleue sur un post-it sur l'écran.",
-        insight: "Les mots de passe, clés et jetons se rangent dans un coffre dédié (gestionnaire de secrets), jamais dans le code.",
-        tradeOff: "Un peu plus de mise en place, mais c'est la base non négociable — un secret dans le code finit toujours par fuiter."
+        definition: "Stockage et rotation centralisés des credentials sensibles (API keys, mots de passe BDD, certificats) hors du code source.",
+        example: "Variables injectées depuis Vault ou AWS Secrets Manager au déploiement — jamais de `API_KEY=xxx` dans Git.",
+        tradeOff: "Setup initial, mais un secret commité finit presque toujours par être exposé."
       },
       {
         concept: "CI/CD (intégration et livraison continues)",
-        image: "Une chaîne de montage automobile. Le code passe sur un tapis roulant : on le teste automatiquement, on l'assemble, on le met en production sans tout faire à la main.",
-        insight: "Chaque changement est vérifié par des robots avant d'atteindre les utilisateurs.",
-        tradeOff: "Installer la chaîne demande un investissement initial, mais ensuite on livre vite, souvent, et avec moins d'erreurs humaines."
+        definition: "Pipeline automatisé qui build, teste et déploie le code à chaque commit ou merge, sans intervention manuelle.",
+        example: "Push sur `main` → GitHub Actions lance les tests → build Docker → déploiement sur Kubernetes si tout est vert.",
+        tradeOff: "Investissement pipeline, mais livraisons fréquentes et reproductibles avec moins d'erreurs humaines."
       },
       {
         concept: "Infrastructure as code (IaC)",
-        image: "Une notice de montage IKEA. Au lieu de visser les serveurs « à la main », tu écris la recette dans des fichiers.",
-        insight: "On peut reconstruire à l'identique l'infrastructure entière en rejouant la notice.",
-        tradeOff: "Plus de rigueur au départ, mais fini les serveurs « configurés on ne sait plus comment » impossibles à reproduire."
+        definition: "Description déclarative de l'infrastructure (serveurs, réseau, DNS, IAM) dans des fichiers versionnés, appliqués par un outil.",
+        example: "Fichier Terraform qui provisionne 3 instances EC2 + un RDS PostgreSQL — rejouable à l'identique sur staging et prod.",
+        tradeOff: "Courbe d'apprentissage, mais fini les serveurs configurés à la main et impossibles à reproduire."
       }
     ],
     takeaway: "La sécurité de base n'est pas optionnelle (identité ≠ droits, secrets au coffre), et tout ce qui est manuel et non reproductible est une bombe à retardement. Automatise et écris tes recettes."
@@ -693,33 +693,33 @@ const modulesData = [
     knowledgePoints: [
       {
         concept: "« Ça dépend » est une vraie réponse",
-        image: "Demander « quelle est la meilleure voiture ? » n'a pas de sens sans savoir si c'est pour déménager, faire du circuit ou se garer en ville.",
-        insight: "En architecture, il n'y a pas de gagnant universel, seulement le bon choix pour un contexte donné.",
-        tradeOff: "Méfie-toi de quiconque a la même réponse à toutes les questions."
+        definition: "Il n'existe pas d'architecture universellement optimale — le bon choix dépend du contexte (équipe, charge, budget, délais, domaine).",
+        example: "Event-driven + microservices pour Netflix ; monolithe modulaire pour un MVP à 3 développeurs — les deux sont valides dans leur contexte.",
+        tradeOff: "Méfiance envers les solutions « one size fits all » vendues comme standards."
       },
       {
         concept: "Dette technique (technical debt)",
-        image: "La carte de crédit. Payer en raccourci aujourd'hui te fait avancer vite, mais tu rembourses plus tard, avec intérêts (du temps et des bugs).",
-        insight: "Parfois la dette est un choix malin (livrer vite), à condition de la rembourser.",
-        tradeOff: "Un peu de dette accélère ; trop de dette non remboursée finit par tout paralyser."
+        definition: "Compromis de conception ou raccourcis de code pris pour livrer plus vite, qui augmentent le coût de modification future.",
+        example: "Copier-coller la logique de validation au lieu de créer un module partagé — gain immédiat, refactor obligatoire dans 6 mois.",
+        tradeOff: "Dette consciente et remboursée = levier ; dette ignorée = ralentissement progressif de toute l'équipe."
       },
       {
         concept: "Réversibilité d'une décision",
-        image: "Certaines portes se rouvrent (tu peux revenir en arrière), d'autres claquent dans ton dos.",
-        insight: "Une décision facile à défaire mérite peu de débat ; une décision irréversible mérite qu'on y réfléchisse longuement.",
-        tradeOff: "Prends vite les décisions réversibles, prends ton temps sur les irréversibles."
+        definition: "Facilité avec laquelle une décision architecturale peut être annulée ou modifiée sans coût prohibitif.",
+        example: "Choisir Redis comme cache = réversible (on peut migrer). Choisir une base propriétaire verrouillée = difficile à inverser.",
+        tradeOff: "Décisions réversibles → trancher vite ; décisions irréversibles → analyser en profondeur avant de committer."
       },
       {
         concept: "ADR (carnet de décisions d'architecture)",
-        image: "Le carnet de bord d'un capitaine. Pour chaque grande décision : le contexte, le choix retenu, et surtout les options écartées et pourquoi.",
-        insight: "Six mois plus tard, quand quelqu'un demande « pourquoi on a fait comme ça ? », la réponse est écrite.",
-        tradeOff: "Quelques minutes d'écriture qui sauvent des heures de débats répétés."
+        definition: "Document court qui enregistre une décision architecturale, son contexte, les options écartées et leurs raisons.",
+        example: "ADR-007 : « On choisit PostgreSQL plutôt que MongoDB car les relations commande/client sont centrales et transactionnelles. »",
+        tradeOff: "Quelques minutes d'écriture qui évitent de re-débattre les mêmes choix six mois plus tard."
       },
       {
         concept: "Grille d'arbitrage concrète",
-        image: "Le comparateur d'assurances — tu ne regardes pas qu'une colonne, tu pèses l'ensemble selon ce qui compte pour toi maintenant.",
-        insight: "Pour trancher : impact client, coût, délai, risque, réversibilité, dette créée, compétences de l'équipe.",
-        tradeOff: "Aucun critère seul ne suffit — c'est la pondération qui compte."
+        definition: "Ensemble de critères pondérés pour comparer objectivement plusieurs options architecturales.",
+        example: "Option A vs B : impact client (3/5), coût infra (2/5), délai (4/5), risque (2/5), réversibilité (5/5), dette (3/5).",
+        tradeOff: "Aucun critère seul ne décide — c'est la pondération selon le contexte actuel qui tranche."
       }
     ],
     takeaway: "L'architecte ne cherche pas LA bonne réponse, il rend explicites les compromis et trace le pourquoi. La meilleure architecture est celle qui sert ton contexte — et que ton équipe sait faire vivre."
