@@ -638,8 +638,8 @@ function renderKnowledge(mod, section) {
 
   mod.knowledgePoints.forEach((point) => {
     const li = document.createElement("li");
-    const definition = point.definition || point.image || "";
-    const example = point.example || point.insight || "";
+    const definition = point.definition || "";
+    const example = point.example || "";
     li.innerHTML = `
       <strong>${escapeHtml(point.concept)}</strong>
       <p class="knowledge-definition"><em>Définition :</em> ${escapeHtml(definition)}</p>
